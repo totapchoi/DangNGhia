@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const multer = require('multer');
+const fs = require('fs');
 const app = express();
 
 // Configure multer storage
@@ -21,15 +22,11 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
-// SQLite database connection
+//Create database, table, and inititate data sample if it doesn't exist
 const db = new sqlite3.Database('employees.db');
-
-// Create the employees table if it doesn't exist
-db.run('CREATE TABLE IF NOT EXISTS employees (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, picture TEXT)');
-
-
-// Initialize sample data
 initializeSampleData();
+
+
 
 // API endpoints
 app.get('/search', searchEmployees);
@@ -42,7 +39,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-function initializeSampleData() {
+async function initializeSampleData() {
   const sampleEmployees = [
     {
       name: 'John Doe',
@@ -59,18 +56,52 @@ function initializeSampleData() {
       address: 'Ben xe',
       picture: 'uploads/handsome.jpg',
     },
-
   ];
 
-  sampleEmployees.forEach((employee) => {
-    const sql = 'INSERT OR IGNORE INTO employees (id, name, address, picture) VALUES (?, ?, ?, ?)';
-    db.run(sql, [employee.id, employee.name, employee.address, employee.picture], (err) => {
-      if (err) {
-        console.error('Error initializing sample data:', err);
-      }
+  try {
+    // Check if the table exists
+    const tableExists = await new Promise((resolve) => {
+      db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='employees'", (err, row) => {
+        if (err || !row) {
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
     });
-  });
+
+    // If the table doesn't exist, create it
+    if (!tableExists) {
+      db.run('CREATE TABLE employees (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, picture TEXT)');
+    }
+
+    // Check if the table is empty
+    const isEmpty = await new Promise((resolve) => {
+      db.get('SELECT count(*) as count FROM employees', (err, row) => {
+        if (err || row.count === 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+
+    // If the table is empty, insert sample data
+    if (isEmpty) {
+      sampleEmployees.forEach((employee) => {
+        const sql = 'INSERT OR IGNORE INTO employees (id, name, address, picture) VALUES (?, ?, ?, ?)';
+        db.run(sql, [employee.id, employee.name, employee.address, employee.picture], (err) => {
+          if (err) {
+            console.error('Error initializing sample data:', err);
+          }
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Error initializing sample data:', error);
+  }
 }
+
 
 async function searchEmployees(req, res) {
   const query = req.query.q || '';

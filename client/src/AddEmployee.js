@@ -7,24 +7,24 @@ function AddEmployee() {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [picture, setPicture] = useState(null);
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
- const handleAddEmployee = async (e) => {
-  e.preventDefault();
-  const formData = new FormData();
-  formData.append('name', name);
-  formData.append('address', address);
-  if (picture) {
-    formData.append('picture', picture, picture.name);
-  }
+  const handleAddEmployee = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('address', address);
+    if (picture) {
+      formData.append('picture', picture, picture.name);
+    }
 
-  try {
-    await axios.post('/add-employee', formData);
-    navigate('/');
-  } catch (error) {
-    console.error('Error adding employee:', error);
-  }
-};
+    try {
+      await axios.post('/add-employee', formData);
+      navigate('/');
+    } catch (error) {
+      console.error('Error adding employee:', error);
+    }
+  };
 
   return (
     <div className="add-employee-form">
