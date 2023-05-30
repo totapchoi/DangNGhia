@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const multer = require('multer');
-const fs = require('fs');
 const app = express();
 
 // Configure multer storage
@@ -21,6 +20,7 @@ const upload = multer({ storage: storage });
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
+app.put('/api/employees/:id', updateEmployee);
 
 //Create database, table, and inititate data sample if it doesn't exist
 const db = new sqlite3.Database('employees.db');
@@ -86,8 +86,28 @@ async function initializeSampleData() {
       });
     });
 
-    // If the table is empty, insert sample data
+      // If the table is empty, drop and recreate the table, then insert sample data
     if (isEmpty) {
+      await new Promise((resolve, reject) => {
+        db.run("DROP TABLE employees", (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+      });
+
+      await new Promise((resolve, reject) => {
+        db.run("CREATE TABLE employees (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, picture TEXT)", (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+      });
+
       sampleEmployees.forEach((employee) => {
         const sql = 'INSERT OR IGNORE INTO employees (id, name, address, picture) VALUES (?, ?, ?, ?)';
         db.run(sql, [employee.id, employee.name, employee.address, employee.picture], (err) => {
@@ -139,6 +159,20 @@ function addEmployee(req, res) {
     }
   });
 }
+
+async function updateEmployee(req, res) {
+  const { id, address, picture } = req.body;
+
+  const sql = 'UPDATE employees SET address = ? WHERE id = ?';
+  db.run(sql, [address, picture, id], (err) => {
+    if (err) {
+      res.status(500).send({ error: 'An error occurred while updating the employee' });
+    } else {
+      res.status(200).send({ message: 'Employee updated successfully' });
+    }
+  });
+}
+
 async function deleteEmployee(req, res) {
   const id = req.params.id;
 

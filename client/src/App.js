@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -24,8 +25,6 @@ function App() {
     }
   }, []);
 
-
-
   useEffect(() => {
     fetchEmployees(searchQuery);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,24 +50,25 @@ function App() {
             </li>
           </ul>
         </nav>
-       <Routes>
-        <Route exact path="/" element={<EmployeeList employees={employees} />} />
-          <Route
-            path="/search"
-            element={
-              <SearchEmployee
-               searchQuery={searchQuery}
-               setSearchQuery={setSearchQuery}
-              />
-            }
-          />
-          <Route path="/add-employee" element={<AddEmployee />} />
-          <Route path="/delete-employee" element={<DeleteEmployee />} />
-        </Routes>
+        {employees.length > 0 && (
+          <Routes>
+            <Route exact path="/" element={<EmployeeList employees={employees} />} />
+            <Route
+              path="/search"
+              element={
+                <SearchEmployee
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                />
+              }
+            />
+            <Route path="/add-employee" element={<AddEmployee />} />
+            <Route path="/delete-employee" element={<DeleteEmployee />} />
+          </Routes>
+        )}
       </div>
     </Router>
-    );
+  );
+}
 
-  }
-
-  export default App;
+export default App;

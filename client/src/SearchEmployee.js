@@ -1,6 +1,8 @@
+// SearchEmployee.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import EmployeeList from './EmployeeList';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function SearchEmployee({ searchQuery, setSearchQuery }) {
   const [filteredEmployees, setFilteredEmployees] = useState([]);
@@ -9,7 +11,6 @@ function SearchEmployee({ searchQuery, setSearchQuery }) {
     if (searchQuery) {
       const fetchFilteredEmployees = async () => {
         const response = await axios.get(`/search?q=${searchQuery}`);
-
         setFilteredEmployees(response.data);
       };
       fetchFilteredEmployees();
@@ -19,8 +20,27 @@ function SearchEmployee({ searchQuery, setSearchQuery }) {
   }, [searchQuery]);
 
   return (
-    <div className="search-container">
-      <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+    <div className="container">
+      <form className="form-group" onSubmit={(e) => {
+        e.preventDefault();
+        setSearchQuery('');
+      }}>
+        <div className="row">
+          <div className="col-md-6">
+            <input
+              type="text"
+              className="form-control"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="col-md-6">
+            <button type="submit" className="btn btn-primary">
+              Search
+            </button>
+          </div>
+        </div>
+      </form>
       <EmployeeList employees={filteredEmployees} />
     </div>
   );
