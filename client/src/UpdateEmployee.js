@@ -1,4 +1,3 @@
-// UpdateEmployee.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -21,7 +20,8 @@ function UpdateEmployee() {
     fetchEmployee();
   }, [id]);
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
     try {
       const formData = new FormData();
       formData.append('address', employee.address);

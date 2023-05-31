@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -8,7 +7,9 @@ import './App.css';
 import AddEmployee from './AddEmployee';
 import EmployeeList from './EmployeeList';
 import SearchEmployee from './SearchEmployee';
-import DeleteEmployee from './DeleteEmployee';
+import UpdateEmployee from './UpdateEmployee';
+
+
 
 function App() {
   const [employees, setEmployees] = useState([]);
@@ -27,7 +28,6 @@ function App() {
 
   useEffect(() => {
     fetchEmployees(searchQuery);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     console.log('Employees state:', employees);
   }, [fetchEmployees, searchQuery]);
 
@@ -45,14 +45,10 @@ function App() {
             <li>
               <Link to="/add-employee">Add Employee</Link>
             </li>
-            <li>
-              <Link to="/delete-employee">Delete Employee</Link>
-            </li>
           </ul>
         </nav>
         {employees.length > 0 && (
           <Routes>
-            <Route exact path="/" element={<EmployeeList employees={employees} />} />
             <Route
               path="/search"
               element={
@@ -63,7 +59,8 @@ function App() {
               }
             />
             <Route path="/add-employee" element={<AddEmployee />} />
-            <Route path="/delete-employee" element={<DeleteEmployee />} />
+            <Route path="/update-employee/:id" element={<UpdateEmployee />} />
+            <Route exact path="/" element={<EmployeeList employees={employees} setEmployees={setEmployees} />} />
           </Routes>
         )}
       </div>

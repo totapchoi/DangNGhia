@@ -1,35 +1,62 @@
-// EmployeeList.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-function EmployeeList({ employees }) {
-  return (
-    <div>
-      <h1>Employee List</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((employee) => (
-            <tr key={employee.id}>
-              <td>{employee.id}</td>
-              <td>{employee.name}</td>
-              <td>
-                <Link to={`/update-employee/${employee.id}`} className="btn btn-primary">
-                  Update
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+function EmployeeList({ employees, setEmployees }) {
+  const [deleting, setDeleting] = useState(false);
 
-export default EmployeeList;
+  const handleDelete = async (id) => {
+    setDeleting(true);
+    try {
+      await axios.delete(`/delete-employee/${id}`);
+      alert('Employee deleted successfully');
+      setEmployees(employees.filter((employee) => employee.id !== id));
+    } catch (error) {
+        alert('An error occurred while deleting the employee');
+    } finally {
+        setDeleting(false);
+    }
+  };
+
+
+     return (
+       <div>
+         <h1>Employee List</h1>
+         <table className="table">
+           <thead>
+             <tr>
+               <th>Picture</th>
+               <th>ID</th>
+               <th>Name</th>
+               <th>Actions</th>
+             </tr>
+           </thead>
+           <tbody>
+             {employees.map((employee) => (
+               <tr key={employee.id}>
+                 <td>
+                   <img
+                     src={employee.picture}
+                     alt={`${employee.name}'s avatar`}
+                     style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                   />
+                 </td>
+                 <td>{employee.id}</td>
+                 <td>{employee.name}</td>
+                 <td>
+                   <Link to={`/update-employee/${employee.id}`} className="btn btn-primary">
+                     Update
+                   </Link>
+                   <button onClick={() => handleDelete(employee.id)} className="btn btn-danger">
+                     Delete
+                   </button>
+                 </td>
+               </tr>
+             ))}
+           </tbody>
+         </table>
+       </div>
+     );
+   }
+
+   export default EmployeeList;

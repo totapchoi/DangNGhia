@@ -20,7 +20,7 @@ const upload = multer({ storage: storage });
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
-app.put('/api/employees/:id', updateEmployee);
+
 
 //Create database, table, and inititate data sample if it doesn't exist
 const db = new sqlite3.Database('employees.db');
@@ -32,6 +32,8 @@ initializeSampleData();
 app.get('/search', searchEmployees);
 app.post('/add-employee', upload.single('picture'), addEmployee);
 app.delete('/delete-employee/:id', deleteEmployee);
+app.put('/api/employees/:id', updateEmployee);
+app.get('/api/employees/:id', getEmployee);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
@@ -164,7 +166,7 @@ async function updateEmployee(req, res) {
   const { id, address, picture } = req.body;
 
   const sql = 'UPDATE employees SET address = ? WHERE id = ?';
-  db.run(sql, [address, picture, id], (err) => {
+  db.run(sql, [address, id], (err) => {
     if (err) {
       res.status(500).send({ error: 'An error occurred while updating the employee' });
     } else {
@@ -189,4 +191,30 @@ async function deleteEmployee(req, res) {
       res.status(200).send({ message: 'Employee deleted successfully' });
     }
   });
+}
+async function getEmployee(req, res) {
+  const id = req.params.id;
+
+  try {
+    const employee = await new Promise((resolve, reject) => {
+      db.get('SELECT * FROM employees WHERE id = ?', [id], (error, row) => {
+        if (error) {
+          console.error('Error in SQL query:', error);
+          reject(error);
+        } else {
+          console.log('SQL query result:', row);
+          resolve(row);
+        }
+      });
+    });
+
+    if (employee) {
+      res.json(employee);
+    } else {
+      res.status(404).json({ error: 'Employee not found' });
+    }
+  } catch (error) {
+    console.error('Error executing SQL query:', error);
+    res.status(500).json({ error: 'An error occurred while fetching the employee' });
+  }
 }
