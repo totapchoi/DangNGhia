@@ -47,22 +47,22 @@ function App() {
             </li>
           </ul>
         </nav>
-        {employees.length > 0 && (
-          <Routes>
-            <Route
-              path="/search"
+        
+        <Routes>
+          <Route
+            path="/search"
               element={
-                <SearchEmployee
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                />
-              }
-            />
-            <Route path="/add-employee" element={<AddEmployee />} />
-            <Route path="/update-employee/:id" element={<UpdateEmployee />} />
-            <Route exact path="/" element={<EmployeeList employees={employees} setEmployees={setEmployees} />} />
-          </Routes>
-        )}
+              <SearchEmployee
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+          />
+        }
+         />
+          <Route path="/add-employee" element={<AddEmployee />} />
+          <Route path="/update-employee/:id" element={<UpdateEmployee />} />
+         <Route exact path="/" element={<EmployeeList employees={employees} setEmployees={setEmployees} />} />
+        </Routes>
+      }
       </div>
     </Router>
   );

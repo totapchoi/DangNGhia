@@ -36,5 +36,4 @@ coverage/
 # Database file
 employee.db
 
-# Additional rules from second .gitignore
-# Add your rules here
+uploads/

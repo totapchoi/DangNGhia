@@ -25,11 +25,17 @@ function UpdateEmployee() {
     try {
       const formData = new FormData();
       formData.append('address', employee.address);
-      if (employee.picture) {
+      if (employee.picture instanceof Blob) {
         formData.append('picture', employee.picture, employee.picture.name);
       }
       await axios.put(`/api/employees/${id}`, formData);
-      setEmployee({ ...employee, picture: URL.createObjectURL(employee.picture) });
+
+      if (employee.picture instanceof Blob) {
+        setEmployee({ ...employee, picture: URL.createObjectURL(employee.picture) });
+      } else {
+        setEmployee({ ...employee });
+      }
+      alert('Update succesfully');
     } catch (error) {
       console.error('Error updating employee:', error);
     }
@@ -48,14 +54,13 @@ function UpdateEmployee() {
               value={employee.address || ''}
               onChange={(e) => setEmployee({ ...employee, address: e.target.value })}
             />
-            <button type="submit">Update Address</button>
+            <DropzoneArea
+              acceptedFiles={['image/*']}
+              dropzoneText="Drag and drop an image here or click"
+              onChange={(files) => setEmployee({ ...employee, picture: files[0] })}
+            />
+            <button type="submit">Update Employee</button>
           </form>
-          <DropzoneArea
-            acceptedFiles={['image/*']}
-            dropzoneText="Drag and drop an image here or click"
-            onChange={(files) => setEmployee({ ...employee, picture: files[0] })}
-          />
-          <button onClick={handleUpdate}>Update Picture</button>
         </div>
       ) : (
         <p>Loading...</p>

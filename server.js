@@ -32,7 +32,7 @@ initializeSampleData();
 app.get('/search', searchEmployees);
 app.post('/add-employee', upload.single('picture'), addEmployee);
 app.delete('/delete-employee/:id', deleteEmployee);
-app.put('/api/employees/:id', updateEmployee);
+app.put('/api/employees/:id', upload.single('picture'), updateEmployee);
 app.get('/api/employees/:id', getEmployee);
 
 // Start the server
@@ -163,10 +163,12 @@ function addEmployee(req, res) {
 }
 
 async function updateEmployee(req, res) {
-  const { id, address, picture } = req.body;
+  const id = req.params.id;
+  const { address } = req.body;
+  const picture = req.file ? req.file.path : '';
 
-  const sql = 'UPDATE employees SET address = ? WHERE id = ?';
-  db.run(sql, [address, id], (err) => {
+  const sql = 'UPDATE employees SET address = ?, picture = ? WHERE id = ?';
+  db.run(sql, [address, picture, id], (err) => {
     if (err) {
       res.status(500).send({ error: 'An error occurred while updating the employee' });
     } else {
