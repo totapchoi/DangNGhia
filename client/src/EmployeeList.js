@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import EmployeeContext from './EmployeeContext';
 
-function EmployeeList({ employees, setEmployees }) {
+function EmployeeList() {
+  const { employees, setEmployees } = useContext(EmployeeContext);
   const [deleting, setDeleting] = useState(false);
 
   const handleDelete = async (id) => {
@@ -28,6 +30,7 @@ function EmployeeList({ employees, setEmployees }) {
                <th>Picture</th>
                <th>ID</th>
                <th>Name</th>
+               <th>Adress</th>
                <th>Actions</th>
              </tr>
            </thead>
@@ -43,6 +46,7 @@ function EmployeeList({ employees, setEmployees }) {
                  </td>
                  <td>{employee.id}</td>
                  <td>{employee.name}</td>
+                 <td>{employee.address}</td>
                  <td>
                    <Link to={`/update-employee/${employee.id}`} className="btn btn-primary">
                      Update

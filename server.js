@@ -58,6 +58,11 @@ async function initializeSampleData() {
       address: 'Ben xe',
       picture: 'uploads/handsome.jpg',
     },
+    {
+      name: 'Kenshiro',
+      address: 'Japan',
+      picture: 'uploads/shine.jpeg',
+    },
   ];
 
   try {
@@ -153,11 +158,12 @@ function addEmployee(req, res) {
   const picture = req.file ? req.file.path : '';
 
   const sql = 'INSERT INTO employees (name, address, picture) VALUES (?, ?, ?)';
-  db.run(sql, [name, address, picture], (err) => {
+  db.run(sql, [name, address, picture], function (err) {
     if (err) {
       res.status(500).send({ error: 'An error occurred while adding a new employee' });
     } else {
-      res.status(201).send({ message: 'Employee added successfully' });
+      const newEmployee = { id: this.lastID, name, address, picture };
+      res.status(201).json(newEmployee);
     }
   });
 }

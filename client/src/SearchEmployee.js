@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useContext} from 'react';
 import axios from 'axios';
 import EmployeeList from './EmployeeList';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import EmployeeContext from './EmployeeContext';
 
 function SearchEmployee({ searchQuery, setSearchQuery }) {
   const [filteredEmployees, setFilteredEmployees] = useState([]);

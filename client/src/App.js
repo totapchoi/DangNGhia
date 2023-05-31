@@ -8,8 +8,7 @@ import AddEmployee from './AddEmployee';
 import EmployeeList from './EmployeeList';
 import SearchEmployee from './SearchEmployee';
 import UpdateEmployee from './UpdateEmployee';
-
-
+import EmployeeContext from './EmployeeContext';
 
 function App() {
   const [employees, setEmployees] = useState([]);
@@ -47,22 +46,22 @@ function App() {
             </li>
           </ul>
         </nav>
-        
-        <Routes>
-          <Route
-            path="/search"
+        <EmployeeContext.Provider value={{ employees, setEmployees }}>
+          <Routes>
+            <Route
+              path="/search"
               element={
-              <SearchEmployee
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-          />
-        }
-         />
-          <Route path="/add-employee" element={<AddEmployee />} />
-          <Route path="/update-employee/:id" element={<UpdateEmployee />} />
-         <Route exact path="/" element={<EmployeeList employees={employees} setEmployees={setEmployees} />} />
-        </Routes>
-      }
+                <SearchEmployee
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                />
+              }
+            />
+            <Route path="/add-employee" element={<AddEmployee />} />
+            <Route path="/update-employee/:id" element={<UpdateEmployee />} />
+            <Route exact path="/" element={<EmployeeList />} />
+          </Routes>
+        </EmployeeContext.Provider>
       </div>
     </Router>
   );

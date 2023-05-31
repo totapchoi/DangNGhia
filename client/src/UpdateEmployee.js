@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { DropzoneArea } from 'material-ui-dropzone';
+import EmployeeContext from './EmployeeContext';
 
 function UpdateEmployee() {
   const { id } = useParams();
   const [employee, setEmployee] = useState(null);
+  const { employees, setEmployees } = useContext(EmployeeContext);
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -30,11 +32,17 @@ function UpdateEmployee() {
       }
       await axios.put(`/api/employees/${id}`, formData);
 
+      const updatedEmployeeIndex = employees.findIndex((e) => e.id === employee.id);
+      const updatedEmployeeList = [...employees];
+      const updatedEmployee = { ...employee };
+
       if (employee.picture instanceof Blob) {
-        setEmployee({ ...employee, picture: URL.createObjectURL(employee.picture) });
-      } else {
-        setEmployee({ ...employee });
+        updatedEmployee.picture = URL.createObjectURL(employee.picture);
       }
+
+      updatedEmployeeList[updatedEmployeeIndex] = updatedEmployee;
+      setEmployees(updatedEmployeeList);
+
       alert('Update succesfully');
     } catch (error) {
       console.error('Error updating employee:', error);
