@@ -32,4 +32,9 @@ coverage/
 # OS-specific files
 .DS_Store
 .npm
- 
+
+# Database file
+employee.db
+
+# Additional rules from second .gitignore
+# Add your rules here
