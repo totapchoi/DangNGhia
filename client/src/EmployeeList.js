@@ -8,17 +8,19 @@ function EmployeeList() {
   const [deleting, setDeleting] = useState(false);
 
   const handleDelete = async (id) => {
-    setDeleting(true);
-    try {
-      await axios.delete(`/delete-employee/${id}`);
-      alert('Employee deleted successfully');
-      setEmployees(employees.filter((employee) => employee.id !== id));
-    } catch (error) {
-        alert('An error occurred while deleting the employee');
-    } finally {
-        setDeleting(false);
-    }
-  };
+  setDeleting(true);
+  try {
+    await axios.delete(`/delete-employee/${id}`);
+    const employeeToDelete = employees.find((employee) => employee.id === id);
+    setEmployees(employees.filter((employee) => employee.id !== id));
+    alert(`Delete ${employeeToDelete.name} Successfully`);
+  } catch (error) {
+    alert('An error occurred while deleting the employee');
+  } finally {
+    setDeleting(false);
+  }
+};
+
 
 
      return (

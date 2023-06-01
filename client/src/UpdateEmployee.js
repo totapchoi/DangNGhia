@@ -24,6 +24,12 @@ function UpdateEmployee() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+
+    if (!employee.name || employee.name.trim() === '') {
+      alert('Name field cannot be empty');
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append('name', employee.name);
@@ -44,7 +50,7 @@ function UpdateEmployee() {
       updatedEmployeeList[updatedEmployeeIndex] = updatedEmployee;
       setEmployees(updatedEmployeeList);
 
-      alert('Update succesfully');
+      alert(`Update ${employee.name} Successfully`);
     } catch (error) {
       console.error('Error updating employee:', error);
     }
