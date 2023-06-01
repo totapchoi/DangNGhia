@@ -9,8 +9,20 @@ function EmployeeList() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    setEmployees([]);
-  }, [employees]);
+  const fetchEmployees = async (query = '') => {
+    try {
+      const response = await axios.get('/search', { params: { q: query } });
+      if (JSON.stringify(response.data) !== JSON.stringify(employees)) {
+        setEmployees(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+
+  fetchEmployees(searchQuery);
+}, [searchQuery, employees]);
+
 
   const handleDelete = async (id) => {
     setDeleting(true);
