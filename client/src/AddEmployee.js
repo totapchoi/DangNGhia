@@ -14,11 +14,6 @@ function AddEmployee() {
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (!employee.name || employee.name.trim() === '') {
-      alert('Name field cannot be empty');
-      return;
-    }
-
     try {
       const formData = new FormData();
       formData.append('name', employee.name);
@@ -28,15 +23,20 @@ function AddEmployee() {
       }
       const response = await axios.post('/add-employee', formData);
 
-      const imageUrl = employee.picture
-        ? URL.createObjectURL(employee.picture)
-        : '../../uploads/default.jpeg';
+      if (response.data.success) {
+        const imageUrl = employee.picture
+          ? URL.createObjectURL(employee.picture)
+          : '../../uploads/default.jpeg';
 
-      const newEmployee = { ...employee, picture: imageUrl };
-      setEmployees([...employees, newEmployee]);
+        const newEmployee = { ...employee, picture: imageUrl };
+        setEmployees([...employees, newEmployee]);
 
-      alert(`Add ${employee.name} Successfully`);
-      setEmployee({ name: '', address: '', picture: null });
+        alert(`Add ${employee.name} Successfully`);
+        setEmployee({ name: '', address: '', picture: null });
+      } else {
+        // Handle validation errors from the server
+        alert(response.data.message);
+      }
     } catch (error) {
       console.error('Error adding employee:', error);
     }

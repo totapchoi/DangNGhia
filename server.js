@@ -155,7 +155,7 @@ async function searchEmployees(req, res) {
 
 function addEmployee(req, res) {
   const { name, address } = req.body;
-  const picture = req.file ? req.file.path : '';
+  const picture = req.file ? req.file.path : 'uploads/default.jpeg'; // Set the default image path here
 
   // Check if the name field is empty
   if (!name) {
@@ -173,6 +173,7 @@ function addEmployee(req, res) {
     }
   });
 }
+
 
 
 async function updateEmployee(req, res) {
