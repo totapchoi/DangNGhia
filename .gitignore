@@ -34,5 +34,5 @@ coverage/
 .npm
 
 # Database file
-employee.db
+employees.db
 
