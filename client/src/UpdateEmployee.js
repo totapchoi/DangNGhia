@@ -26,6 +26,7 @@ function UpdateEmployee() {
     e.preventDefault();
     try {
       const formData = new FormData();
+      formData.append('name', employee.name);
       formData.append('address', employee.address);
       if (employee.picture instanceof Blob) {
         formData.append('picture', employee.picture, employee.picture.name);
@@ -56,6 +57,12 @@ function UpdateEmployee() {
           <h1>Update Employee</h1>
           <img src={employee.picture} alt={`${employee.name}'s picture`} />
           <form onSubmit={handleUpdate}>
+            <input
+              type="text"
+              placeholder="Employee Name"
+              value={employee.name || ''}
+              onChange={(e) => setEmployee({ ...employee, name: e.target.value })}
+            />
             <input
               type="text"
               placeholder="Address"

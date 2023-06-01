@@ -157,6 +157,12 @@ function addEmployee(req, res) {
   const { name, address } = req.body;
   const picture = req.file ? req.file.path : '';
 
+  // Check if the name field is empty
+  if (!name) {
+    res.status(400).send({ error: 'Employee name is required' });
+    return;
+  }
+
   const sql = 'INSERT INTO employees (name, address, picture) VALUES (?, ?, ?)';
   db.run(sql, [name, address, picture], function (err) {
     if (err) {
@@ -168,16 +174,22 @@ function addEmployee(req, res) {
   });
 }
 
+
 async function updateEmployee(req, res) {
   const id = req.params.id;
-  const { address } = req.body;
+  const { name, address } = req.body;
   const picture = req.file ? req.file.path : '';
 
-  // Check if the picture field is empty
+  // Check if the name field is empty
+  if (!name) {
+    res.status(400).send({ error: 'Employee name is required' });
+    return;
+  }
+
   if (picture === '') {
-    // If it's empty, don't update the picture field
-    const sql = 'UPDATE employees SET address = ? WHERE id = ?';
-    db.run(sql, [address, id], (err) => {
+    // If the picture field is empty, don't update the picture field
+    const sql = 'UPDATE employees SET name = ?, address = ? WHERE id = ?';
+    db.run(sql, [name, address, id], (err) => {
       if (err) {
         res.status(500).send({ error: 'An error occurred while updating the employee' });
       } else {
@@ -185,9 +197,9 @@ async function updateEmployee(req, res) {
       }
     });
   } else {
-    // If it's not empty, update both the address and picture fields
-    const sql = 'UPDATE employees SET address = ?, picture = ? WHERE id = ?';
-    db.run(sql, [address, picture, id], (err) => {
+    // If the picture field is not empty, update the name, address, and picture fields
+    const sql = 'UPDATE employees SET name = ?, address = ?, picture = ? WHERE id = ?';
+    db.run(sql, [name, address, picture, id], (err) => {
       if (err) {
         res.status(500).send({ error: 'An error occurred while updating the employee' });
       } else {
