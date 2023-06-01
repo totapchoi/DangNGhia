@@ -8,6 +8,7 @@ function UpdateEmployee() {
   const { id } = useParams();
   const [employee, setEmployee] = useState(null);
   const { employees, setEmployees } = useContext(EmployeeContext);
+  const [dropzoneKey, setDropzoneKey] = useState(0);
 
   useEffect(() => {
     const fetchEmployee = async () => {

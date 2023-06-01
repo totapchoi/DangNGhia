@@ -6,17 +6,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import AddEmployee from './AddEmployee';
 import EmployeeList from './EmployeeList';
-import SearchEmployee from './SearchEmployee';
 import UpdateEmployee from './UpdateEmployee';
 import EmployeeContext from './EmployeeContext';
 
 function App() {
   const [employees, setEmployees] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
 
-  const fetchEmployees = useCallback(async (query = '') => {
+  const fetchEmployees = useCallback(async () => {
     try {
-      const response = await axios.get(`/search?q=${query}`);
+      const response = await axios.get('/employees');
       console.log('Fetched employees data:', response.data);
       setEmployees(response.data);
     } catch (error) {
@@ -26,9 +24,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchEmployees(searchQuery);
+    fetchEmployees();
     console.log('Employees state:', employees);
-  }, [fetchEmployees, searchQuery]);
+  }, [fetchEmployees]);
 
   return (
     <Router>
@@ -39,24 +37,12 @@ function App() {
               <Link to="/">Employee List</Link>
             </li>
             <li>
-              <Link to="/search">Search Employee</Link>
-            </li>
-            <li>
               <Link to="/add-employee">Add Employee</Link>
             </li>
           </ul>
         </nav>
         <EmployeeContext.Provider value={{ employees, setEmployees }}>
           <Routes>
-            <Route
-              path="/search"
-              element={
-                <SearchEmployee
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                />
-              }
-            />
             <Route path="/add-employee" element={<AddEmployee />} />
             <Route path="/update-employee/:id" element={<UpdateEmployee />} />
             <Route exact path="/" element={<EmployeeList />} />

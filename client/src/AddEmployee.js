@@ -26,9 +26,13 @@ function AddEmployee() {
       if (employee.picture) {
         formData.append('picture', employee.picture, employee.picture.name);
       }
-    const response = await axios.post('/add-employee', formData);
+      const response = await axios.post('/add-employee', formData);
 
-      const newEmployee = { ...employee, picture: URL.createObjectURL(employee.picture) };
+      const imageUrl = employee.picture
+        ? URL.createObjectURL(employee.picture)
+        : '../../uploads/default.jpeg';
+
+      const newEmployee = { ...employee, picture: imageUrl };
       setEmployees([...employees, newEmployee]);
 
       alert(`Add ${employee.name} Successfully`);
