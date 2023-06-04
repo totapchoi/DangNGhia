@@ -3,12 +3,16 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { DropzoneArea } from 'material-ui-dropzone';
 import EmployeeContext from './EmployeeContext';
+import ReactModal from 'react-modal';
+
+ReactModal.setAppElement('#root');
 
 function UpdateEmployee() {
   const { id } = useParams();
   const [employee, setEmployee] = useState(null);
   const { employees, setEmployees } = useContext(EmployeeContext);
-  const [dropzoneKey, setDropzoneKey] = useState(0);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -52,6 +56,7 @@ function UpdateEmployee() {
       setEmployees(updatedEmployeeList);
 
       alert(`Update ${employee.name} Successfully`);
+      setModalIsOpen(true);
     } catch (error) {
       console.error('Error updating employee:', error);
     }
@@ -67,14 +72,18 @@ function UpdateEmployee() {
             <input
               type="text"
               placeholder="Employee Name"
-              value={employee.name || ''}
+              value={employee.name}
               onChange={(e) => setEmployee({ ...employee, name: e.target.value })}
+              required
+              pattern="\S+.*"
+              className='input-field'
             />
             <input
               type="text"
               placeholder="Address"
-              value={employee.address || ''}
+              value={employee.address}
               onChange={(e) => setEmployee({ ...employee, address: e.target.value })}
+              className="input-field"
             />
             <DropzoneArea
               acceptedFiles={['image/*']}
@@ -83,10 +92,16 @@ function UpdateEmployee() {
             />
             <button type="submit">Update Employee</button>
           </form>
+          <ReactModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+            <h2>Success</h2>
+            <p>Update {employee.name} Successfully</p>
+            <button onClick={() => setModalIsOpen(false)}>Close</button>
+          </ReactModal>
         </div>
       ) : (
         <p>Loading...</p>
       )}
+
     </div>
   );
 }

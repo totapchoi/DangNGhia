@@ -13,15 +13,16 @@ function App() {
   const [employees, setEmployees] = useState([]);
 
   const fetchEmployees = useCallback(async () => {
-    try {
-      const response = await axios.get('/employees');
-      console.log('Fetched employees data:', response.data);
-      setEmployees(response.data);
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-      console.error('Error details:', error.response);
-    }
-  }, []);
+  try {
+    const response = await axios.get('/search');
+    console.log('Fetched employees data:', response.data);
+    setEmployees(response.data);
+  } catch (error) {
+    console.error('Error fetching employees:', error);
+    console.error('Error details:', error.response);
+  }
+}, []);
+
 
   useEffect(() => {
     fetchEmployees();

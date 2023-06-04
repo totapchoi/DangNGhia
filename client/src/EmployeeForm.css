@@ -1,0 +1,16 @@
+.input-fields {
+  display: flex;
+}
+
+.input-field {
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.input-field:first-child {
+  margin-right: 20px;
+}

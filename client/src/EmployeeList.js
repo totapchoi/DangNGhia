@@ -2,6 +2,10 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import EmployeeContext from './EmployeeContext';
+import './EmployeeForm.css';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 function EmployeeList() {
   const { employees, setEmployees } = useContext(EmployeeContext);
@@ -25,17 +29,27 @@ function EmployeeList() {
 
 
   const handleDelete = async (id) => {
-    setDeleting(true);
-    try {
-      await axios.delete(`/delete-employee/${id}`);
-      const employeeToDelete = employees.find((employee) => employee.id === id);
-      setEmployees(employees.filter((employee) => employee.id !== id));
-      alert(`Delete ${employeeToDelete.name} Successfully`);
-    } catch (error) {
-      alert('An error occurred while deleting the employee');
-    } finally {
-      setDeleting(false);
-    }
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure you want to delete this employee?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: async () => {
+            try {
+              await axios.delete(`/delete-employee/${id}`);
+              const employeeToDelete = employees.find((employee) => employee.id === id);
+              setEmployees(employees.filter((employee) => employee.id !== id));
+            } catch (error) {
+              alert('An error occurred while deleting the employee');
+            }
+          },
+        },
+        {
+          label: 'No',
+        },
+      ],
+    });
   };
 
   const filteredEmployees = employees.filter((employee) =>

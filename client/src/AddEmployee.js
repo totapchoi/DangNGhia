@@ -2,6 +2,10 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { DropzoneArea } from 'material-ui-dropzone';
 import EmployeeContext from './EmployeeContext';
+import './EmployeeForm.css';
+import ReactModal from 'react-modal';
+
+ReactModal.setAppElement('#root');
 
 function AddEmployee() {
   const [employee, setEmployee] = useState({
@@ -10,6 +14,8 @@ function AddEmployee() {
     picture: null,
   });
   const { employees, setEmployees } = useContext(EmployeeContext);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -31,10 +37,9 @@ function AddEmployee() {
         const newEmployee = { ...employee, picture: imageUrl };
         setEmployees([...employees, newEmployee]);
 
-        alert(`Add ${employee.name} Successfully`);
+        setModalIsOpen(true);
         setEmployee({ name: '', address: '', picture: null });
       } else {
-        // Handle validation errors from the server
         alert(response.data.message);
       }
     } catch (error) {
@@ -51,12 +56,16 @@ function AddEmployee() {
           placeholder="Employee Name"
           value={employee.name}
           onChange={(e) => setEmployee({ ...employee, name: e.target.value })}
+          required
+          pattern="\S+.*"
+          className='input-field'
         />
         <input
           type="text"
           placeholder="Address"
           value={employee.address}
           onChange={(e) => setEmployee({ ...employee, address: e.target.value })}
+          className="input-field"
         />
         <DropzoneArea
           acceptedFiles={['image/*']}
@@ -65,6 +74,11 @@ function AddEmployee() {
         />
         <button type="submit">Add Employee</button>
       </form>
+       <ReactModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+        <h2>Success</h2>
+        <p>Add {employee.name} Successfully</p>
+        <button onClick={() => setModalIsOpen(false)}>Close</button>
+      </ReactModal>
     </div>
   );
 }
