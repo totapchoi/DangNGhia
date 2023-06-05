@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { DropzoneArea } from 'material-ui-dropzone';
 import EmployeeContext from './EmployeeContext';
 import ReactModal from 'react-modal';
+import EmployeeForm from './EmployeeForm';
+import './modalStyles.css';
+
 
 ReactModal.setAppElement('#root');
 
@@ -55,7 +57,6 @@ function UpdateEmployee() {
       updatedEmployeeList[updatedEmployeeIndex] = updatedEmployee;
       setEmployees(updatedEmployeeList);
 
-      alert(`Update ${employee.name} Successfully`);
       setModalIsOpen(true);
     } catch (error) {
       console.error('Error updating employee:', error);
@@ -66,33 +67,15 @@ function UpdateEmployee() {
     <div>
       {employee ? (
         <div>
-          <h1>Update Employee</h1>
           <img src={employee.picture} alt={`${employee.name}'s picture`} />
-          <form onSubmit={handleUpdate}>
-            <input
-              type="text"
-              placeholder="Employee Name"
-              value={employee.name}
-              onChange={(e) => setEmployee({ ...employee, name: e.target.value })}
-              required
-              pattern="\S+.*"
-              className='input-field'
-            />
-            <input
-              type="text"
-              placeholder="Address"
-              value={employee.address}
-              onChange={(e) => setEmployee({ ...employee, address: e.target.value })}
-              className="input-field"
-            />
-            <DropzoneArea
-              acceptedFiles={['image/*']}
-              dropzoneText="Drag and drop an image here or click"
-              onChange={(files) => setEmployee({ ...employee, picture: files[0] })}
-            />
-            <button type="submit">Update Employee</button>
-          </form>
-          <ReactModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+           <EmployeeForm
+            employee={employee}
+            setEmployee={setEmployee}
+            handleSubmit={handleUpdate}
+            formTitle="Update Employee"
+            submitButtonText="Update Employee"
+          />
+          <ReactModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} className="custom-modal-style" overlayClassName="modal-overlay">
             <h2>Success</h2>
             <p>Update {employee.name} Successfully</p>
             <button onClick={() => setModalIsOpen(false)}>Close</button>

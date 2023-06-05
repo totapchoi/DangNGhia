@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { DropzoneArea } from 'material-ui-dropzone';
 import EmployeeContext from './EmployeeContext';
-import './EmployeeForm.css';
+import EmployeeForm from './EmployeeForm';
 import ReactModal from 'react-modal';
+import './modalStyles.css';
+
 
 ReactModal.setAppElement('#root');
 
@@ -49,32 +50,14 @@ function AddEmployee() {
 
   return (
     <div>
-      <h1>Add Employee</h1>
-      <form onSubmit={handleAdd}>
-        <input
-          type="text"
-          placeholder="Employee Name"
-          value={employee.name}
-          onChange={(e) => setEmployee({ ...employee, name: e.target.value })}
-          required
-          pattern="\S+.*"
-          className='input-field'
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          value={employee.address}
-          onChange={(e) => setEmployee({ ...employee, address: e.target.value })}
-          className="input-field"
-        />
-        <DropzoneArea
-          acceptedFiles={['image/*']}
-          dropzoneText="Drag and drop an image here or click"
-          onChange={(files) => setEmployee({ ...employee, picture: files[0] })}
-        />
-        <button type="submit">Add Employee</button>
-      </form>
-       <ReactModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+      <EmployeeForm
+        employee={employee}
+        setEmployee={setEmployee}
+        handleSubmit={handleAdd}
+        formTitle="Add Employee"
+        submitButtonText="Add Employee"
+      />
+       <ReactModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} className="custom-modal-style" overlayClassName="modal-overlay">
         <h2>Success</h2>
         <p>Add {employee.name} Successfully</p>
         <button onClick={() => setModalIsOpen(false)}>Close</button>

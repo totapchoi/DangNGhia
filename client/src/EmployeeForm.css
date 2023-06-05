@@ -14,3 +14,7 @@
 .input-field:first-child {
   margin-right: 20px;
 }
+
+.custom-modal-style {
+  max-width: 200px;
+}

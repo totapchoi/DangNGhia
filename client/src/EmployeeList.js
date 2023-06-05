@@ -6,26 +6,24 @@ import './EmployeeForm.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-
 function EmployeeList() {
   const { employees, setEmployees } = useContext(EmployeeContext);
-  const [deleting, setDeleting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-  const fetchEmployees = async (query = '') => {
-    try {
-      const response = await axios.get('/search', { params: { q: query } });
-      if (JSON.stringify(response.data) !== JSON.stringify(employees)) {
-        setEmployees(response.data);
+    const fetchEmployees = async (query = '') => {
+      try {
+        const response = await axios.get('/search', { params: { q: query } });
+        if (JSON.stringify(response.data) !== JSON.stringify(employees)) {
+          setEmployees(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching employees:', error);
       }
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-    }
-  };
+    };
 
-  fetchEmployees(searchQuery);
-}, [searchQuery, employees]);
+    fetchEmployees(searchQuery);
+  }, [searchQuery]);
 
 
   const handleDelete = async (id) => {
