@@ -4,6 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const multer = require('multer');
 const app = express();
+const path = require('path');
 
 // Configure multer storage
 const storage = multer.diskStorage({
@@ -20,6 +21,7 @@ const upload = multer({ storage: storage });
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 
 //Create database, table, and inititate data sample if it doesn't exist
@@ -34,6 +36,13 @@ app.post('/add-employee', upload.single('picture'), addEmployee);
 app.delete('/delete-employee/:id', deleteEmployee);
 app.put('/api/employees/:id', upload.single('picture'), updateEmployee);
 app.get('/api/employees/:id', getEmployee);
+
+
+// Catch all other routes and return the index file
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
 
 // Start the server
 const PORT = process.env.PORT || 5000;
