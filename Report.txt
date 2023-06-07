@@ -1,0 +1,4 @@
+07/06/2023
+Install AngularCli
+Tìm hiểu về structure của 1 project angular
+Create hello world
