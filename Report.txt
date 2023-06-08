@@ -3,3 +3,6 @@ Install AngularCli
 Tìm hiểu về structure của 1 project angular
 Create hello world
 Tìm hiểu thuộc tính của 1 component, tạo ra 1 component Home.
+8/6/2023
+Thêm 1 component HousingLocation.
+Tạo ra 1 interface housinglocation
