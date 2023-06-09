@@ -10,3 +10,6 @@ Học về Input parameter
 Học về property binding.
 Học về interpolation.
 Học về ngFor để loop.
+09/06/2023
+Học về service và dependencies injection
+Học về routing
