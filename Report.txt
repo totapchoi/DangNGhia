@@ -13,3 +13,6 @@ Học về ngFor để loop.
 09/06/2023
 Học về service và dependencies injection
 Học về routing
+12/06/2023
+Pass/retreive data bằng route parameter.Dùng routerlink để taọ 1 route bang` dynamic data.
+Học về FormControl, FormGroup. Tạo 1 form để submit
