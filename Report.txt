@@ -16,3 +16,5 @@ Học về routing
 12/06/2023
 Pass/retreive data bằng route parameter.Dùng routerlink để taọ 1 route bang` dynamic data.
 Học về FormControl, FormGroup. Tạo 1 form để submit
+Thêm 1 search funciton vào home component.
+Dùng api để fetch data từ JSON server thay cho local array.
