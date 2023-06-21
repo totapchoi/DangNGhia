@@ -1,0 +1,54 @@
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+img {
+  width: 50px;
+  height: auto;
+}
+.search {
+  margin-bottom:10px;
+}
+.update-button {
+  background-color: green;
+  margin-right: 10px;
+}
+
+.delete-button {
+  background-color: red;
+}
+.add-employee-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.add-employee-container button {
+  width: 10%;
+  height: 100%;
+}
+

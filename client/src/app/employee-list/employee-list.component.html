@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="search">
+    <input [(ngModel)]="query" (input)="search()" placeholder="Search by name" />
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Picture</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employees">
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.address }}</td>
+        <td><img [src]="employeeService.getBaseUrl() + '/' + employee.picture" alt="Employee picture" /></td>
+        <td>
+          <button class="update-button" [routerLink]="'/update-employee/' + employee.id">Update</button>
+          <button class="delete-button" (click)="openDialog(employee.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="add-employee-container">
+     <button routerLink="/add-employee">Add Employee</button>
+</div>

@@ -1,0 +1,38 @@
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports
+report.([0-9]*)
+
+# Build artifacts
+dist/
+node_modules/
+npm-debug.log
+
+# Coverage reports
+coverage/
+
+# Environment files
+.env
+.env.test
+.env.production
+
+# Cache
+.cache
+
+# OS-specific files
+.DS_Store
+.npm
+
+# Database file
+employees.db
+

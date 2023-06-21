@@ -1,0 +1,24 @@
+/* Dialog title */
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+/* Dialog content */
+mat-dialog-content {
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+/* Dialog actions */
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Buttons */
+button {
+  font-size: 14px;
+  margin-left: 8px;
+}

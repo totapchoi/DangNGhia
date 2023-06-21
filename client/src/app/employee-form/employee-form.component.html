@@ -1,0 +1,21 @@
+<form (ngSubmit)="onSubmit()" #employeeForm="ngForm">
+  <div>
+    <label>Name:</label>
+    <input [(ngModel)]="employee.name" name="name" required />
+  </div>
+  <div>
+    <label>Address:</label>
+    <input [(ngModel)]="employee.address" name="address" required />
+  </div>
+  <div>
+    <label>Birthday:</label>
+    <input [(ngModel)]="employee.birthday" name="birthday" type="date" required />
+  </div>
+  <div>
+    <label>Picture:</label>
+    <input type="file" (change)="onFileSelected($event)" />
+  </div>
+  <div>
+    <button type="submit" [disabled]="!employeeForm.form.valid">Submit</button>
+  </div>
+</form>
