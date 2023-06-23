@@ -21,7 +21,7 @@ const upload = multer({ storage: storage });
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
-app.use('/', express.static(path.join(__dirname, 'dist')));
+app.use('/', express.static(path.join(__dirname, '../client/dist')));
 
 
 //Create database, table, and inititate data sample if it doesn't exist

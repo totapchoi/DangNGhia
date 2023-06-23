@@ -1,0 +1,4 @@
+services:
+  - type: web
+    name: Angular-employee-management
+    env: docker
