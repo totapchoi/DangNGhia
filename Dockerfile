@@ -12,11 +12,11 @@ COPY client/package*.json ./client/
 WORKDIR /app/client
 RUN npm install
 
-# Build Angular app
-RUN npm run build -- --configuration production
-
 # Move back to the root directory
 WORKDIR /app
+
+# Build Angular app
+RUN npm run build -- --configuration production
 
 # Expose the server port
 EXPOSE 5000
