@@ -4,12 +4,8 @@ WORKDIR /app
 
 # Copy server files and install server dependencies
 COPY package*.json ./
-COPY server/package*.json ./server/
-WORKDIR /app/server
+COPY server ./
 RUN npm install
-
-# Move back to the root directory
-WORKDIR /app
 
 # Copy client files and install client dependencies
 COPY client/package*.json ./client/
