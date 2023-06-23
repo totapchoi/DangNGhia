@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: my-web-app
+    name: Angular-Employee-Management
     env: node
     startCommand: "npm start"
     dockerfilePath: "Dockerfile"
