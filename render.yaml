@@ -1,4 +1,7 @@
 services:
   - type: web
-    name: Angular-employee-management
-    env: docker
+    name: Angular-Employee-Management
+    env: node
+    buildCommand: "npm run build"
+    startCommand: "npm start"
+    dockerfilePath: "Dockerfile"
