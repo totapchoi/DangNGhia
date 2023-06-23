@@ -16,7 +16,11 @@ RUN npm install
 WORKDIR /app
 
 # Build Angular app
+WORKDIR /app/client
 RUN npm run build -- --configuration production
+
+# Move back to the root directory
+WORKDIR /app
 
 # Expose the server port
 EXPOSE 5000
